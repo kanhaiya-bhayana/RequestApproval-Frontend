@@ -15,8 +15,7 @@ export async function createUser(credentials) {
         if (!response.ok) {
             throw new Error('Failed to create user');
         }
-        // window.location = "/dashboard";
-        return await response.text();
+        return await response.json();
     } catch (error) {
         console.error('Error while creating user', error);
         return null;
@@ -60,5 +59,43 @@ export async function getUser(userid){
     } catch (error) {
         console.error('Error while fetching user', error);
         return null;
+    }
+}
+
+export async function updateUser(request){
+    try{
+        console.log('request', request);
+        const response = await fetch(AUTH_ENDPOINTS.UPDATEUSER,{
+            method: 'PUT',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(request)
+        });
+        if (!response.ok) {
+            throw new Error('Failed to update user');
+        }
+        window.location = '/';
+        return await response.json();
+    }catch(error){
+        console.error('Error while updating user', error);
+    }
+}
+
+export async function deleteUser(userid){
+    try{
+        const response = await fetch(AUTH_ENDPOINTS.DELETEUSER+userid,{
+            method: 'DELETE',
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to delete user');
+        }
+        window.location = '/';
+        return await response.json();
+    }catch(error){
+        console.error('Error while delete user', error);
     }
 }

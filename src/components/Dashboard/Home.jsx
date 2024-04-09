@@ -16,10 +16,15 @@ export default function Home(){
         setUsers(response);
         console.log(response);
     }
+    const handleCreateUser = async (e) => {
+        e.preventDefault();
+        window.location = '/login';
+    }
     return(
       <div>
           <div className="container p-5">
               <h1>List</h1>
+              <button className="btn btn-primary m-2 p-2" onClick={handleCreateUser}>Add User</button>
               <table className="table table-striped">
                   <thead>
                   <tr>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {createUser, getUser} from "../../services/auth";
+import {createUser, deleteUser, getUser, updateUser} from "../../services/auth";
 import LoginImg from "../../images/loginform.png";
 import {useParams} from 'react-router-dom'
 
@@ -13,6 +13,7 @@ export default function UserDetail(props){
     }, []);
 
     const initialState = {
+        id:"",
         userName: "",
         email: "",
         password: ""
@@ -25,6 +26,7 @@ export default function UserDetail(props){
         try {
             const response = await getUser(id);
             setFormInputData({
+                id: response.id,
                 userName: response.userName,
                 email: response.email,
                 password: response.password
@@ -44,10 +46,21 @@ export default function UserDetail(props){
 
     const handleSubmitTest = async (e) => {
         e.preventDefault();
+        // console.log(formInputData);
         // console.log(JSON.stringify(formInputData));
-        const response = await createUser(formInputData);
+        const response = await updateUser(formInputData);
         console.log(response);
     };
+    const onhandleDelete = async (e) => {
+        e.preventDefault();
+        let req = "Are you sure?";
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm(req) === true) {
+            const response = await deleteUser(id);
+            console.log(response)
+        }
+
+    }
     const handleEditClick = (e) => {
         e.preventDefault(); // Prevents default form submission behavior
         setEditMode(true); // Toggles the edit mode
@@ -79,7 +92,10 @@ export default function UserDetail(props){
                                 <button className="btn btn-primary" onClick={handleEditClick}>Edit</button>
                             </div>
                             <div className="col-md-2">
-                                <button className="btn btn-danger" onClick={handleSubmitTest}>Delete</button>
+                                <button className="btn btn-success" onClick={handleSubmitTest}>Update</button>
+                            </div>
+                            <div className="col-md-2">
+                                <button className="btn btn-danger" onClick={onhandleDelete} >Delete</button>
                             </div>
                             <div className="col-md-8"></div>
                         </div>
